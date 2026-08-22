@@ -1,0 +1,12 @@
+.productGrid {
+  background-color: white;
+  margin: auto;
+  max-width: 55rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.productCard {
+  display: flex;
+}

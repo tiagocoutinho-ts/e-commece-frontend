@@ -1,0 +1,10 @@
+.topBar {
+  min-width: 100vw;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color    : rgb(25, 25, 25);
+  color: white;
+
+  display: flex;
+  gap: 1rem;
+}
