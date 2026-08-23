@@ -1,0 +1,32 @@
+.container {
+  margin: auto;
+  max-width: 50rem;
+  min-height: 100vh;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+header {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+header button {
+  padding: 0.5rem;
+  background-color: rgb(28, 28, 116);
+  color: white;
+  border: none;
+  border-radius: 0.2rem;
+  font-weight: 500;
+}

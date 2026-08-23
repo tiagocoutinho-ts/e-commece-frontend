@@ -1,0 +1,109 @@
+
+form {
+  margin: 2rem auto 0;
+  max-width: 50rem;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.groupInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.groupInput label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #222426;
+  font-family: system-ui, sans-serif;
+}
+
+.groupInput input,
+.groupInput textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #b8b8b8;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #111827;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.groupInput textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.groupInput input:focus,
+.groupInput textarea:focus {
+  border-color: #0f172a;
+}
+
+.groupInput input::placeholder,
+.groupInput textarea::placeholder {
+  color: #9ca3af;
+}
+
+.fileInput {
+  font-size: 0.85rem;
+  color: #6b7280;
+  padding: 0.4rem 0.5rem !important;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+.fileInput::file-selector-button {
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  color: #374151;
+  font-weight: 500;
+  margin-right: 0.6rem;
+  cursor: pointer;
+}
+
+.fileHint {
+  font-size: 0.75rem;
+  color: #747373;
+  margin-top: 0.15rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.actions button[type="button"] {
+  background-color: #b91c1c;
+  color: #fff;
+}
+
+.actions button[type="submit"] {
+  background-color: #0f172a;
+  color: #fff;
+}
