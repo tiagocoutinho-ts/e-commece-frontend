@@ -51,6 +51,10 @@
 .fontBold {
   font-weight: 600;
   color: #0f172a;
+  max-width: 170px;
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;
 }
 
 .description {

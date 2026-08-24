@@ -2,23 +2,52 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import formStyles from "./form.module.css";
 import { CRUDTable } from "../../components/CRUDTable/CRUDTable";
+import { api } from "../../api/api";
 
 export function Admin() {
   const [modal, setModal] = useState(false);
+  const [images, setImages] = useState([]);
 
-  const handleForm = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const storagedToken = localStorage.getItem("@ecommerce:token");
+  api.defaults.headers.common["Authorization"] = `Bearer ${storagedToken}`;
+
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
+  ) => {
+    const selectedFiles = Array.from(e.target.files);
+
+    if (selectedFiles.length > 5) {
+      alert("Você pode selecionar no máximo 5 imagens.");
+      e.target.value = "";
+      return;
+    }
+
+    setImages(selectedFiles);
+  };
+
+  const handleForm = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    formData.delete("photos");
+
+    images.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    try {
+      await api.post("/products", formData);
+      alert("Produto cadastrado com sucesso!");
+      handleModal();
+    } catch (error) {
+      console.error("Erro ao cadastrar produto:", error);
+      alert("Erro ao enviar os dados.");
+    }
   };
 
   const handleModal = () => {
     setModal((prevModal) => !prevModal);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 5) {
-      alert("Você só pode selecionar no máximo 5 fotos.");
-      e.target.value = ""; 
-    }
   };
 
   return (
@@ -90,7 +119,7 @@ export function Admin() {
         </section>
       )}
 
-      <CRUDTable/>
+      <CRUDTable />
     </main>
   );
 }
