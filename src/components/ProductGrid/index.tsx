@@ -1,6 +1,9 @@
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
+import { formatCurrency } from "../../utils/formatValues";
+import { Link } from "react-router-dom";
+import { formatSlug } from "../../utils/formatSlug";
 
 export function ProductGrid() {
   const [products, setProducts] = useState([]);
@@ -23,20 +26,24 @@ export function ProductGrid() {
     <section className={styles.productGrid}>
       {products.length > 0 &&
         products.map((product) => (
-          <div key={product.id} className={styles.productCard}>
-            <h3>{product.name}</h3>
-            <h3>{product.price}</h3>
+          <Link to={`/${formatSlug(product.name)}/${product.id}`}>
+            <article key={product.id} className={styles.productCard}>
+              <div className={styles.imageContainer}>
+                {product.images?.length > 0 ? (
+                  <img src={product.images[0].url} alt={product.name} />
+                ) : (
+                  <div className={styles.noImage}>Sem imagem</div>
+                )}
+              </div>
 
-            {product.images.length > 0 ? (
-              <img
-                width={100}
-                src={product.images[0].url}
-                alt={product.name.split(" ").join("-").toLowerCase()}
-              />
-            ) : (
-              <p>sem imagem</p>
-            )}
-          </div>
+              <div className={styles.productInfo}>
+                <h3 className={styles.productName}>{product.name}</h3>
+                <span className={styles.productPrice}>
+                  {formatCurrency(product.price)}
+                </span>
+              </div>
+            </article>
+          </Link> 
         ))}
     </section>
   );
