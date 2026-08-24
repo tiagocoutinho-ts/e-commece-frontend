@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
 import formStyles from "./form.module.css";
+import { CRUDTable } from "../../components/CRUDTable/CRUDTable";
 
 export function Admin() {
   const [modal, setModal] = useState(false);
@@ -16,7 +17,7 @@ export function Admin() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 5) {
       alert("Você só pode selecionar no máximo 5 fotos.");
-      e.target.value = ""; // Limpa a seleção
+      e.target.value = ""; 
     }
   };
 
@@ -88,6 +89,8 @@ export function Admin() {
           </form>
         </section>
       )}
+
+      <CRUDTable/>
     </main>
   );
 }
