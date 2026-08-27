@@ -2,23 +2,26 @@
   margin-top: 0;
   background-color: #1a1d20;
   color: #ffffff;
-  padding: 12px 0;
+  padding: 12px;
+  padding-bottom: 17px;
   border-bottom: 3px solid #ff6600; 
   font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-
 .container {
-  max-width: 1200px;
+  max-width: 60rem;
+  width: 100%;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  box-sizing: border-box;
 }
 
-/* --- Logo --- */
 .logo {
   display: flex;
   align-items: center;
@@ -26,6 +29,8 @@
   font-size: 22px;
   letter-spacing: 0.5px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .logoIcon {
@@ -36,47 +41,57 @@
   color: #ff6600;
 }
 
-/* --- Busca --- */
 .searchBox {
   flex: 1;
-  max-width: 600px;
+  width: 100%;
   display: flex;
   align-items: center;
   background-color: #ffffff;
   border-radius: 4px;
   overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchBox:focus-within {
+  border-color: #ff6600;
+  box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.3);
 }
 
 .searchBox input {
+  width: 100%;
   flex: 1;
   border: none;
-  padding: 10px 14px;
-  font-size: 14px;
+  padding: 6px 16px;
+  font-size: 15px;
   outline: none;
   color: #333333;
+  background: transparent;
 }
 
 .searchBox button {
   background-color: #ff6600;
   border: none;
   color: #ffffff;
-  padding: 10px 16px;
+  padding: 6px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s;
+  flex-shrink: 0;
 }
 
 .searchBox button:hover {
   background-color: #e05500;
 }
 
-/* --- Ações e Carrinho --- */
 .actions {
   display: flex;
   align-items: center;
   gap: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .account {
@@ -101,6 +116,11 @@
   position: relative;
   cursor: pointer;
   padding: 4px;
+  transition: color 0.2s;
+}
+
+.cartButton:hover {
+  color: #ff6600;
 }
 
 .cartBadge {
@@ -119,20 +139,19 @@
   justify-content: center;
 }
 
-/* Responsivo para celulares */
 @media (max-width: 768px) {
   .container {
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
+    padding: 0 16px;
   }
 
   .searchBox {
     order: 3;
     width: 100%;
-    max-width: 100%;
   }
 
   .account {
-    display: none; /* Esconde em telas pequenas */
+    display: none;
   }
 }

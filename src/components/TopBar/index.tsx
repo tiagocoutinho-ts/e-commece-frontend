@@ -1,22 +1,26 @@
-import { ShoppingCart, Search, Wrench } from "lucide-react";
+import { ShoppingCart, Search } from "lucide-react";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
+import { useCar } from "../../contexts/CardContext";
 
 export function TopBar() {
+  const {itemCount} = useCar()
+
   return (
     <header className={styles.topBar}>
       <div className={styles.container}>
         <Link to={"/"}>
-        <div className={styles.logo}>
-          <Wrench className={styles.logoIcon} />
-          <span>AUTO<strong>DRIVE</strong></span>
-        </div>
+          <div className={styles.logo}>
+            <span>
+              Auto<strong>Drive</strong>
+            </span>
+          </div>
         </Link>
 
         <div className={styles.searchBox}>
-          <input 
-            type="text" 
-            placeholder="Busque por peças, acessórios ou modelo do carro..." 
+          <input
+            type="text"
+            placeholder="Busque por peças, acessórios ou modelo do carro..."
           />
           <button type="button" aria-label="Pesquisar">
             <Search size={18} />
@@ -28,10 +32,13 @@ export function TopBar() {
             <span>Olá, motorista</span>
             <strong>Minha Conta</strong>
           </div>
-          
-          <button className={styles.cartButton} aria-label="Carrinho de compras">
+
+          <button
+            className={styles.cartButton}
+            aria-label="Carrinho de compras"
+          >
             <ShoppingCart size={22} />
-            <span className={styles.cartBadge}>0</span>
+            <span className={styles.cartBadge}>{itemCount}</span>
           </button>
         </div>
       </div>
