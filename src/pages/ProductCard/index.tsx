@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { api } from "../../api/api";
 import styles from "./styles.module.css";
 import { TopBar } from "../../components/TopBar";
@@ -7,7 +7,7 @@ import { ShoppingCart, Zap } from "lucide-react";
 import { useCar } from "../../contexts/CardContext";
 
 export function ProductCard() {
-  const { setItemCount } = useCar()
+  const { setItemCount } = useCar();
 
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
@@ -19,7 +19,6 @@ export function ProductCard() {
     const getProduct = async () => {
       try {
         const { data } = await api.get(`/products/${id}`);
-        console.log(data);
         setProduct(data);
       } catch (error) {
         alert("Erro ao carregar produto.");
@@ -39,7 +38,7 @@ export function ProductCard() {
 
   return (
     <main>
-      <TopBar/>
+      <TopBar />
       <section className={styles.productSection}>
         {product ? (
           <div className={styles.productGrid}>
@@ -94,15 +93,17 @@ export function ProductCard() {
                   </select>
                 </div>
 
+                <Link to={"/checkout"}>
+                  <button type="button" className={styles.buyNowButton}>
+                    <Zap size={18} />
+                    Comprar agora
+                  </button>
+                </Link>
                 <button
                   type="button"
-                  className={styles.buyNowButton}
+                  className={styles.addToCartButton}
                   onClick={handleAddToCart}
                 >
-                  <Zap size={18} />
-                  Comprar agora
-                </button>
-                <button type="button" className={styles.addToCartButton}>
                   <ShoppingCart size={18} />
                   Adicionar ao carrinho
                 </button>
