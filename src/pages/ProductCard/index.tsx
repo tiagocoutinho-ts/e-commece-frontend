@@ -7,7 +7,7 @@ import { ShoppingCart, Zap } from "lucide-react";
 import { useCar } from "../../contexts/CardContext";
 
 export function ProductCard() {
-  const { setItemCount } = useCar();
+  const { addToCard, createOrder } = useCar();
 
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
@@ -27,14 +27,6 @@ export function ProductCard() {
 
     getProduct();
   }, []);
-
-  const handleAddToCart = async () => {
-    try {
-      setItemCount((prev) => prev + 1);
-    } catch (error) {
-      alert("Erro ao adicionar ao carrinho.");
-    }
-  };
 
   return (
     <main>
@@ -93,7 +85,7 @@ export function ProductCard() {
                   </select>
                 </div>
 
-                <Link to={"/checkout"}>
+                <Link to={"/checkout"} onClick={createOrder}>
                   <button type="button" className={styles.buyNowButton}>
                     <Zap size={18} />
                     Comprar agora
@@ -102,7 +94,7 @@ export function ProductCard() {
                 <button
                   type="button"
                   className={styles.addToCartButton}
-                  onClick={handleAddToCart}
+                  onClick={() => addToCard(product, quantity)}
                 >
                   <ShoppingCart size={18} />
                   Adicionar ao carrinho

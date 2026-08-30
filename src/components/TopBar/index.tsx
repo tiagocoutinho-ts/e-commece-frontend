@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useCar } from "../../contexts/CardContext";
 
 export function TopBar() {
-  const { itemCount } = useCar();
+  const { itemCount, createOrder } = useCar();
 
   return (
     <header className={styles.topBar}>
@@ -33,7 +33,7 @@ export function TopBar() {
             <strong>Minha Conta</strong>
           </div>
 
-          <Link to={"/checkout"}>
+          <Link to={"/checkout"} onClick={createOrder}>
             <button
               className={styles.cartButton}
               aria-label="Carrinho de compras"
