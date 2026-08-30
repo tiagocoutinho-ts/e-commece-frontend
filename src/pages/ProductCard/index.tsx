@@ -12,27 +12,43 @@ export function ProductCard() {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const stockLimit = 5;
   const { id } = useParams();
 
   useEffect(() => {
     const getProduct = async () => {
       try {
+        setLoading(true);
+        setError(false);
         const { data } = await api.get(`/products/${id}`);
         setProduct(data);
-      } catch (error) {
-        alert("Erro ao carregar produto.");
+        if (data.images && data.images.length > 0) {
+          setSelectedImage(data.images[0].url);
+        }
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
       }
     };
-
-    getProduct();
-  }, []);
+    
+    if (id) {
+      getProduct();
+    }
+  }, [id]);
 
   return (
     <main>
       <TopBar />
       <section className={styles.productSection}>
-        {product ? (
+        {loading ? (
+          <div className={styles.loading}>Carregando produto...</div>
+        ) : error || !product ? (
+          <p className={styles.errorMessage}>Falha ao visualizar produto.</p>
+        ) : (
           <div className={styles.productGrid}>
             <div className={styles.galleryContainer}>
               <div className={styles.thumbnailsList}>
@@ -108,8 +124,6 @@ export function ProductCard() {
               </div>
             </div>
           </div>
-        ) : (
-          <p className={styles.errorMessage}>Falha ao visualizar produto.</p>
         )}
       </section>
     </main>
