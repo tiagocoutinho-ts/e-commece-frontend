@@ -7,25 +7,38 @@ export function CardProvider({ children }) {
   const [card, setCard] = useState([]);
 
   const addToCard = (product, quantity) => {
-    const productExist = card.find((item) => item.productId === product.id);
+    setCard((prevCard) => {
+      const productExist = prevCard.find(
+        (item) => item.product.id === product.id
+      );
 
-    if (productExist) {
-      setCard((prev) =>
-        prev.map((item) =>
-          item.productId === product.id
+      if (productExist) {
+        return prevCard.map((item) =>
+          item.product.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
-        )
-      );
-    } else {
-      setCard((prev) => [...prev, { productId: product.id, quantity }]);
-    }
+        );
+      }
+
+      return [...prevCard, { product, quantity }];
+    });
   };
 
   const itemCount = card.length;
 
-  const createOrder = async () => {
-    const response = await api.post("/card/item", { item: card });
+  const createOrder = async (itemsToOrder) => {
+      try {
+      const list = itemsToOrder || card
+      const payload = list.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+      }));
+
+      const response = await api.post("/cart/items", { items: payload });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (

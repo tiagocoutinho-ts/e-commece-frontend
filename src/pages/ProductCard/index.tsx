@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../api/api";
 import styles from "./styles.module.css";
 import { TopBar } from "../../components/TopBar";
@@ -8,6 +8,7 @@ import { useCar } from "../../contexts/CardContext";
 
 export function ProductCard() {
   const { addToCard, createOrder } = useCar();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
@@ -34,11 +35,23 @@ export function ProductCard() {
         setLoading(false);
       }
     };
-    
+
     if (id) {
       getProduct();
     }
   }, [id]);
+
+  const handleBuyNow = async () => {
+    addToCard(product, quantity);
+    const currentItem = [{ product, quantity }];
+
+    try {
+      await createOrder(currentItem);
+      navigate("/checkout");
+    } catch (err) {
+      alert("Não foi possível processar a compra. Tente novamente.");
+    }
+  };
 
   return (
     <main>
@@ -101,12 +114,14 @@ export function ProductCard() {
                   </select>
                 </div>
 
-                <Link to={"/checkout"} onClick={createOrder}>
-                  <button type="button" className={styles.buyNowButton}>
-                    <Zap size={18} />
-                    Comprar agora
-                  </button>
-                </Link>
+                <button
+                  type="button"
+                  className={styles.buyNowButton}
+                  onClick={handleBuyNow}
+                >
+                  <Zap size={18} />
+                  Comprar agora
+                </button>
                 <button
                   type="button"
                   className={styles.addToCartButton}
