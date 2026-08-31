@@ -4,10 +4,10 @@ import { api } from "../../api/api";
 import styles from "./styles.module.css";
 import { TopBar } from "../../components/TopBar";
 import { ShoppingCart, Zap } from "lucide-react";
-import { useCar } from "../../contexts/CardContext";
+import { useCard } from "../../contexts/CardContext";
 
 export function ProductCard() {
-  const { addToCard, createOrder } = useCar();
+  const { addToCard, createOrder } = useCard();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);

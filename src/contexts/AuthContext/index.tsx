@@ -1,11 +1,29 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 import { api } from "../../api/api";
 
-const AuthContext = createContext({});
+interface AuthContextData {
+  signed: boolean;
+  token: string | null;
+  loading: boolean;
+  signIn: (newToken: string, callback?: () => void) => void;
+  signOut: () => void;
+}
 
-export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true)
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storagedToken = localStorage.getItem("@ecommerce:token");
@@ -16,9 +34,14 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  function signIn(newToken) {
+  function signIn(newToken: string, callback?: () => void) {
     localStorage.setItem("@ecommerce:token", newToken);
     setToken(newToken);
+    api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+
+    if (callback) {
+      callback();
+    }
   }
 
   function signOut() {

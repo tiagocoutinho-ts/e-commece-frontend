@@ -4,7 +4,7 @@ import { ProductGrid } from "../../components/ProductGrid";
 import { TopBar } from "../../components/TopBar";
 import { AppProviders } from "../../contexts/AppProviders";
 import { Login } from "../../pages/Auth/Login";
-import { SingUp } from "../../pages/Auth/SingUp";
+import { SignUp } from "../../pages/Auth/SingUp";
 import { Admin } from "../../pages/Admin";
 import { ProductCard } from "../../pages/ProductCard";
 import { Checkout } from "../../pages/Checkout";
@@ -29,7 +29,7 @@ export function AppRoutes() {
 
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<Login />} />
-            <Route path="/criarconta" element={<SingUp />} />
+            <Route path="/criarconta" element={<SignUp />} />
           </Route>
 
           {/* PrivateRoute */}

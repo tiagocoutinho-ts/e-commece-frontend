@@ -48,4 +48,4 @@ export function CardProvider({ children }) {
   );
 }
 
-export const useCar = () => useContext(CardContext);
+export const useCard = () => useContext(CardContext);

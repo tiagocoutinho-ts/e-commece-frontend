@@ -1,10 +1,10 @@
 import { ShoppingCart, Search } from "lucide-react";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
-import { useCar } from "../../contexts/CardContext";
+import { useCard } from "../../contexts/CardContext";
 
 export function TopBar() {
-  const { itemCount, createOrder } = useCar();
+  const { itemCount, createOrder } = useCard();
 
   return (
     <header className={styles.topBar}>
