@@ -38,7 +38,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.setItem("@ecommerce:token", newToken);
     setToken(newToken);
     api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-
     if (callback) {
       callback();
     }

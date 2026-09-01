@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useCard } from "../../contexts/CardContext";
 
 export function TopBar() {
-  const { itemCount, createOrder } = useCard();
+  const { itemsCount, createOrder } = useCard();
 
   return (
     <header className={styles.topBar}>
@@ -39,7 +39,9 @@ export function TopBar() {
               aria-label="Carrinho de compras"
             >
               <ShoppingCart size={22} />
-              <span className={styles.cartBadge}>{itemCount}</span>
+              {itemsCount > 0 && (
+                <span className={styles.cartBadge}>{itemsCount}</span>
+              )}
             </button>
           </Link>
         </div>

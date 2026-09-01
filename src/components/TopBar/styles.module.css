@@ -4,7 +4,7 @@
     color: #ffffff;
     padding: 12px 0 16px 0;
     border-bottom: 3px solid #8a7a7a;
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }

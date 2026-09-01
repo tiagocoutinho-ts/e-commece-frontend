@@ -3,10 +3,8 @@ import { CardProvider } from "./CardContext";
 
 export function AppProviders({ children }) {
   return (
-    <CardProvider>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
-    </CardProvider>
-  )
+    <AuthProvider>
+      <CardProvider>{children}</CardProvider>
+    </AuthProvider>
+  );
 }
