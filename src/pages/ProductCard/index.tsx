@@ -53,6 +53,12 @@ export function ProductCard() {
     }
   };
 
+  const handleAddCard = (product, quantity) => {
+    const currentItem = [{ product, quantity }];
+    addToCard(product, quantity);
+    createOrder(currentItem);
+  };
+
   return (
     <main>
       <TopBar />
@@ -125,7 +131,7 @@ export function ProductCard() {
                 <button
                   type="button"
                   className={styles.addToCartButton}
-                  onClick={() => addToCard(product, quantity)}
+                  onClick={() => handleAddCard(product, quantity)}
                 >
                   <ShoppingCart size={18} />
                   Adicionar ao carrinho
