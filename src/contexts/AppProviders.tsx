@@ -1,10 +1,13 @@
 import { AuthProvider } from "./AuthContext";
 import { CardProvider } from "./CardContext";
+import { ProductProvider } from "./ProductContext";
 
 export function AppProviders({ children }) {
   return (
     <AuthProvider>
-      <CardProvider>{children}</CardProvider>
+      <ProductProvider>
+        <CardProvider>{children}</CardProvider>
+      </ProductProvider>
     </AuthProvider>
   );
 }

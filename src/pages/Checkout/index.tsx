@@ -7,6 +7,7 @@ import { formatSlug } from "../../utils/formatSlug";
 import styles from "./styles.module.css";
 import { TopBar } from "../../components/TopBar";
 import { useCard } from "../../contexts/CardContext";
+import { toast } from "react-toastify";
 
 interface CartItem {
   id: string;
@@ -79,9 +80,22 @@ export function Checkout() {
     }
   };
 
+  const handlerOrderCheckout = async () => {
+    try {
+      const { status } = await api.post("/orders/checkout", {
+        shippingAddress: "São Paulo, Zona Leste",
+      });
+      if (status === 201) {
+        toast.success("Compra realizada com sucesso!");
+        setCard(undefined);
+      }
+    } catch (error) {
+      toast.error("Falha ao concluir a compra.");
+    }
+  };
+
   return (
     <main className={styles.containerMain}>
-      <TopBar />
       <section className={styles.container}>
         {loading || !card || !card.items ? (
           <div className={styles.loading}>Carregando carrinho...</div>
@@ -94,68 +108,77 @@ export function Checkout() {
               </span>
             </header>
 
-            <section className={styles.itemsList}>
-              {card.items.map((item: CartItem) => (
-                <article key={item.id} className={styles.itemCard}>
-                  <div className={styles.imageWrapper}>
-                    <img
-                      src={item.product.images[0]?.url}
-                      alt={formatSlug(item.product.name)}
-                    />
-                  </div>
-
-                  <div className={styles.itemInfo}>
-                    <div className={styles.mainDetails}>
-                      <h2>{item.product.name}</h2>
-                      <span className={styles.unitPrice}>
-                        {formatCurrency(item.product.price)} un.
-                      </span>
-                    </div>
-
-                    <div className={styles.subDetails}>
-                      <div className={styles.boxBotton}>
-                        <button
-                          onClick={() =>
-                            handleUpdateQuantity(
-                              item.product.id,
-                              item.quantity - 1
-                            )
-                          }
-                        >
-                          -
-                        </button>
-                        <span className={styles.quantity}>
-                          Qtd: {item.quantity}
-                        </span>
-                        <button
-                          onClick={() =>
-                            handleUpdateQuantity(
-                              item.product.id,
-                              item.quantity + 1
-                            )
-                          }
-                        >
-                          +
-                        </button>
+            {card.items.length > 0 ? (
+              <>
+                <section className={styles.itemsList}>
+                  {card.items.map((item: CartItem) => (
+                    <article key={item.id} className={styles.itemCard}>
+                      <div className={styles.imageWrapper}>
+                        <img
+                          src={item.product.images[0]?.url}
+                          alt={formatSlug(item.product.name)}
+                        />
                       </div>
-                      <span className={styles.totalPrice}>
-                        {formatCurrency(item.product.price * item.quantity)}
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </section>
 
-            <footer className={styles.summary}>
-              <div className={styles.summaryRow}>
-                <span>Total</span>
-                <strong>{formatCurrency(totalCart)}</strong>
-              </div>
-              <button className={styles.checkoutButton}>
-                Finalizar Compra
-              </button>
-            </footer>
+                      <div className={styles.itemInfo}>
+                        <div className={styles.mainDetails}>
+                          <h2>{item.product.name}</h2>
+                          <span className={styles.unitPrice}>
+                            {formatCurrency(item.product.price)} un.
+                          </span>
+                        </div>
+
+                        <div className={styles.subDetails}>
+                          <div className={styles.boxBotton}>
+                            <button
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item.product.id,
+                                  item.quantity - 1
+                                )
+                              }
+                            >
+                              -
+                            </button>
+                            <span className={styles.quantity}>
+                              Qtd: {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item.product.id,
+                                  item.quantity + 1
+                                )
+                              }
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className={styles.totalPrice}>
+                            {formatCurrency(item.product.price * item.quantity)}
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </section>
+
+                <footer className={styles.summary}>
+                  <div className={styles.summaryRow}>
+                    <span>Total</span>
+                    <strong>{formatCurrency(totalCart)}</strong>
+                  </div>
+                  <button
+                    onClick={handlerOrderCheckout}
+                    className={styles.checkoutButton}
+                  >
+                    Finalizar Compra
+                  </button>
+                </footer>
+              </>
+            ) : (
+              ""
+            )}
           </>
         )}
       </section>

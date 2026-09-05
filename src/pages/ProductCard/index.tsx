@@ -61,7 +61,6 @@ export function ProductCard() {
 
   return (
     <main>
-      <TopBar />
       <section className={styles.productSection}>
         {loading ? (
           <div className={styles.loading}>Carregando produto...</div>

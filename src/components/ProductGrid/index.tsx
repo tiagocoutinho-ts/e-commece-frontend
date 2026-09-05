@@ -1,30 +1,15 @@
 import styles from "./styles.module.css";
-import { useEffect, useState } from "react";
-import { api } from "../../api/api";
 import { formatCurrency } from "../../utils/formatValues";
 import { Link } from "react-router-dom";
 import { formatSlug } from "../../utils/formatSlug";
+import { useProducts } from "../../contexts/ProductContext";
 
 export function ProductGrid() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const { data } = await api.get("/products");
-        console.log(data);
-        setProducts(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getProducts();
-  }, []);
+  const { products } = useProducts();
 
   return (
     <section className={styles.productGrid}>
-      {products.length > 0 &&
+      {products &&
         products.map((product) => (
           <Link to={`/${formatSlug(product.name)}/${product.id}`}>
             <article key={product.id} className={styles.productCard}>
@@ -43,7 +28,7 @@ export function ProductGrid() {
                 </span>
               </div>
             </article>
-          </Link> 
+          </Link>
         ))}
     </section>
   );
