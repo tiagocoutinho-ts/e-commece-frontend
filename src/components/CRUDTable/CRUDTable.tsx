@@ -1,24 +1,36 @@
-import { useEffect, useState } from "react"
-import { api } from "../../api/api"
-import styles from "./styles.module.css"
-import { formatCurrency, formatDate } from "../../utils/formatValues"
+import { useEffect, useState } from "react";
+import { api } from "../../api/api";
+import styles from "./styles.module.css";
+import { formatCurrency } from "../../utils/formatValues";
+import { toast } from "react-toastify";
 
 export function CRUDTable() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const { data } = await api.get("/products")
-        console.log(data)
-        setProducts(data)
-      } catch(error) {
-        console.log(error)
+        const { data } = await api.get("/products/admin/all");
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
 
-    getProducts()
-  }, [])
+    getProducts();
+  }, []);
+
+  const handlerDeleteProduct = async (id) => {
+    try {
+      const { data, status } = await api.delete(`/products/${id}`);
+      console.log(data);
+      if (status === 200) {
+        toast.success("Produto deletado com sucesso!");
+      }
+    } catch (error) {
+      toast.error("Falha ao deletar produto.");
+    }
+  };
 
   return (
     <section className={styles.container}>
@@ -30,7 +42,7 @@ export function CRUDTable() {
             <th>Descrição</th>
             <th>Preço</th>
             <th>Estoque</th>
-            <th>Data de Criação</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +66,20 @@ export function CRUDTable() {
                   {formatCurrency(product.price)}
                 </td>
                 <td>{product.stock} un.</td>
-                <td>{formatDate(product.createdAt)}</td>
+                <td>
+                  {product.active ? (
+                    <button
+                      className={styles.btn}
+                      onClick={() => handlerDeleteProduct(product.id)}
+                    >
+                      Deletar
+                    </button>
+                  ) : (
+                    <span>
+                      Inativo
+                      </span>
+                  )}
+                </td>
               </tr>
             ))
           ) : (
@@ -67,5 +92,5 @@ export function CRUDTable() {
         </tbody>
       </table>
     </section>
-  )
+  );
 }

@@ -3,13 +3,11 @@ import styles from "./styles.module.css";
 import formStyles from "./form.module.css";
 import { CRUDTable } from "../../components/CRUDTable/CRUDTable";
 import { api } from "../../api/api";
+import { toast } from "react-toastify";
 
 export function Admin() {
   const [modal, setModal] = useState(false);
   const [images, setImages] = useState([]);
-
-  const storagedToken = localStorage.getItem("@ecommerce:token");
-  api.defaults.headers.common["Authorization"] = `Bearer ${storagedToken}`;
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
@@ -17,7 +15,7 @@ export function Admin() {
     const selectedFiles = Array.from(e.target.files);
 
     if (selectedFiles.length > 5) {
-      alert("Você pode selecionar no máximo 5 imagens.");
+      toast.info("Você pode selecionar no máximo 5 imagens.");
       e.target.value = "";
       return;
     }
@@ -38,11 +36,10 @@ export function Admin() {
 
     try {
       await api.post("/products", formData);
-      alert("Produto cadastrado com sucesso!");
+      toast.success("Produto cadastrado com sucesso!");
       handleModal();
     } catch (error) {
-      console.error("Erro ao cadastrar produto:", error);
-      alert("Erro ao enviar os dados.");
+      toast.error("Erro ao enviar os dados.");
     }
   };
 
@@ -53,7 +50,7 @@ export function Admin() {
   return (
     <main className={styles.container}>
       <header>
-        <h1>Produtos</h1>
+        <h1>Gerenciar produtos</h1>
         <button onClick={handleModal}>Novo Produto</button>
       </header>
       {modal && (

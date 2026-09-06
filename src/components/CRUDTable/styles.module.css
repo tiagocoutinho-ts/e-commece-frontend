@@ -74,3 +74,31 @@
   color: #64748b;
   padding: 2rem !important;
 }
+
+/* Novo estilo do botão em CSS Module */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #e03936;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background-color: #9c2927;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+span {
+  color: #e03936;
+}

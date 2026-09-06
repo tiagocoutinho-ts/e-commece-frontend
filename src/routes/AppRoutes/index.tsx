@@ -20,17 +20,17 @@ export function AppRoutes() {
     <AppProviders>
       <BrowserRouter>
         <Routes>
-
           <Route element={<MainLayout />}>
             <Route path="/" element={<ProductGrid />} />
             <Route path="/:slug/:id" element={<ProductCard />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/admin" element={<Admin />} />
             </Route>
           </Route>
           
+          <Route path="/admin" element={<Admin />} />
+
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<Login />} />
             <Route path="/criarconta" element={<SignUp />} />

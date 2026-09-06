@@ -5,7 +5,6 @@ import { api } from "../../api/api";
 import { formatCurrency } from "../../utils/formatValues";
 import { formatSlug } from "../../utils/formatSlug";
 import styles from "./styles.module.css";
-import { TopBar } from "../../components/TopBar";
 import { useCard } from "../../contexts/CardContext";
 import { toast } from "react-toastify";
 
@@ -18,11 +17,6 @@ interface CartItem {
     price: number;
     images: { url: string }[];
   };
-}
-
-interface Cart {
-  id: string;
-  items: CartItem[];
 }
 
 export function Checkout() {
