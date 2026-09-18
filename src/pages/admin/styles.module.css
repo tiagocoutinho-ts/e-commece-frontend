@@ -24,9 +24,13 @@ h1 {
 
 header button {
   padding: 0.5rem;
-  background-color: rgb(28, 28, 116);
+  background-color: rgb(34, 83, 198);
   color: white;
   border: none;
   border-radius: 0.2rem;
   font-weight: 500;
+}
+
+header button:hover {
+  background-color: rgb(33, 68, 150);
 }

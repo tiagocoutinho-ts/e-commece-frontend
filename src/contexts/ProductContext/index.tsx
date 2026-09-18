@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
 
 interface Product {
   id: string;
@@ -17,9 +17,9 @@ interface Product {
 
 interface ProductContextData {
   products: Product[];
-  searchInput: string;                    
-  setSearchInput: (value: string) => void; 
-  handleSearch: (overrideSearch?: string) => void;         
+  searchInput: string;
+  setSearchInput: (value: string) => void;
+  handleSearch: (overrideSearch?: string) => void;
   loading: boolean;
 }
 

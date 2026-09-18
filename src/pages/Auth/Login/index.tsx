@@ -1,8 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { useState } from "react";
-import { api } from "../../../api/api";
+import { api } from "../../../service/api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -18,17 +19,17 @@ export function Login() {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Preencha os campos email e senha.");
+      toast.info("Preencha os campos email e senha.");
       return;
     }
 
     try {
       const { data } = await api.post("/auth/login", { email, password });
-      signIn(data.token, () => {
+      signIn(data, () => {
         navigate(from, { replace: true });
       });
     } catch (error) {
-      alert("Erro ao fazer login.");
+      toast.error("email e senha inválidos.");
     }
   };
 

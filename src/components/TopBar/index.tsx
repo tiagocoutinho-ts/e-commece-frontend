@@ -3,10 +3,13 @@ import styles from "./styles.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useCard } from "../../contexts/CardContext";
 import { useProducts } from "../../contexts/ProductContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function TopBar() {
   const { itemsCount, createOrder } = useCard();
   const { searchInput, setSearchInput, handleSearch } = useProducts();
+  const { userName } = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,8 +19,8 @@ export function TopBar() {
   };
 
   const handleLogoClick = () => {
-    setSearchInput(""); 
-    handleSearch("");     
+    setSearchInput("");
+    handleSearch("");
   };
 
   return (
@@ -45,7 +48,7 @@ export function TopBar() {
 
         <div className={styles.actions}>
           <div className={styles.account}>
-            <span>Olá, motorista</span>
+            <span>Olá, {userName ? userName.name : "Motorista"}</span>
             <strong>Minha Conta</strong>
           </div>
 

@@ -2,7 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useState } from "react";
-import { api } from "../../../api/api";
+import { api } from "../../../service/api";
+import { toast } from "react-toastify";
 
 export function SignUp() {
   const [name, setName] = useState("");
@@ -19,7 +20,7 @@ export function SignUp() {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      alert("Preencha todos os campos.");
+      toast.info("Preencha todos os campos.");
       return;
     }
 
@@ -32,9 +33,8 @@ export function SignUp() {
       signIn(data, () => {
         navigate(from, { replace: true });
       });
-      
     } catch (error) {
-      alert("Erro ao fazer login.");
+      toast.error("Erro ao criar conta.");
     }
   };
 

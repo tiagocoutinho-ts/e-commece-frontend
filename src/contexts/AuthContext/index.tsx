@@ -5,14 +5,31 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+  email: string;
+  id: string;
+  name: string;
+  role: string;
+}
 
 interface AuthContextData {
   signed: boolean;
   token: string | null;
   loading: boolean;
-  signIn: (newToken: string, callback?: () => void) => void;
+  signIn: (response: AuthResponse, callback?: () => void) => void;
   signOut: () => void;
+  userName: User;
 }
 
 interface AuthProviderProps {
@@ -24,6 +41,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState<User | null>(null);
 
   useEffect(() => {
     const storagedToken = localStorage.getItem("@ecommerce:token");
@@ -34,10 +52,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(false);
   }, []);
 
-  function signIn(newToken: string, callback?: () => void) {
-    localStorage.setItem("@ecommerce:token", newToken);
-    setToken(newToken);
-    api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+  function signIn(response, callback?: () => void) {
+    localStorage.setItem("@ecommerce:token", response.token);
+    setToken(response.token);
+    api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
+    setUserName(response.user);
     if (callback) {
       callback();
     }
@@ -56,6 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         loading,
         signIn,
         signOut,
+        userName,
       }}
     >
       {children}

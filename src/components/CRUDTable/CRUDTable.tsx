@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
 import styles from "./styles.module.css";
 import { formatCurrency } from "../../utils/formatValues";
 import { toast } from "react-toastify";
@@ -22,9 +22,11 @@ export function CRUDTable() {
 
   const handlerDeleteProduct = async (id) => {
     try {
-      const { data, status } = await api.delete(`/products/${id}`);
-      console.log(data);
+      const { status } = await api.delete(`/products/${id}`);
       if (status === 200) {
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
+        );
         toast.success("Produto deletado com sucesso!");
       }
     } catch (error) {
@@ -75,9 +77,7 @@ export function CRUDTable() {
                       Deletar
                     </button>
                   ) : (
-                    <span>
-                      Inativo
-                      </span>
+                    <span className={styles.inactive}>Inativo</span>
                   )}
                 </td>
               </tr>

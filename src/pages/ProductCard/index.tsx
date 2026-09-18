@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
 import styles from "./styles.module.css";
 import { TopBar } from "../../components/TopBar";
 import { ShoppingCart, Zap } from "lucide-react";

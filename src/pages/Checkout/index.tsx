@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
 import { formatCurrency } from "../../utils/formatValues";
 import { formatSlug } from "../../utils/formatSlug";
 import styles from "./styles.module.css";
@@ -40,13 +40,13 @@ export function Checkout() {
         setCard(data);
       } catch (error: any) {
         if (error.response?.data?.error) {
-          alert(
+          toast.info(
             "Para sua segurança, sua sessão expirou. Conecte-se novamente."
           );
           signOut();
           navigate("/login");
         } else {
-          alert("Falha ao carregar carrinho.");
+          toast.error("Falha ao carregar carrinho.");
         }
       }
     };
@@ -70,7 +70,7 @@ export function Checkout() {
       });
       setCard(data);
     } catch (error) {
-      alert("Erro ao atualizar a quantidade.");
+      toast.error("Erro ao atualizar a quantidade.");
     }
   };
 

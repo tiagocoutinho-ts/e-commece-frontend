@@ -16,18 +16,17 @@
 }
 
 .table th {
-  background-color: #485258;
-  color: #f9f9f9;
+  color: #403f3f;
   text-align: left;
   padding: 0.75rem 1rem;
   font-weight: 600;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 .table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
+  border-top: 1px solid #949797;
+  border-bottom: 1px solid #949797;
+  color: #34393f;
   vertical-align: middle;
 }
 
@@ -40,6 +39,8 @@
 }
 
 .noImage {
+  width: 45px;
+  height: 45px;
   display: inline-block;
   font-size: 0.75rem;
   color: #57585a;
@@ -66,7 +67,6 @@
 
 .price {
   font-weight: 600;
-  color: #16a34a;
 }
 
 .empty {
@@ -75,18 +75,16 @@
   padding: 2rem !important;
 }
 
-/* Novo estilo do botão em CSS Module */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
   font-weight: 600;
   color: #ffffff;
-  background-color: #e03936;
+  background-color: #f22f2c;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.2rem;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
@@ -99,6 +97,9 @@
   transform: translateY(0);
 }
 
-span {
+.inactive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #e03936;
 }

@@ -5,7 +5,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { api } from "../../api/api";
+import { api } from "../../service/api";
 import { useAuth } from "../AuthContext";
 
 interface CartItem {
