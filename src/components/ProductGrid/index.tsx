@@ -1,8 +1,8 @@
-import styles from "./styles.module.css";
-import { formatCurrency } from "../../utils/formatValues";
+import styles from "@/styles.module.css";
+import { formatCurrency } from "@/utils/formatValues";
 import { Link } from "react-router-dom";
-import { formatSlug } from "../../utils/formatSlug";
-import { useProducts } from "../../contexts/ProductContext";
+import { formatSlug } from "@/utils/formatSlug";
+import { useProducts } from "@/contexts/ProductContext";
 
 export function ProductGrid() {
   const { products } = useProducts();

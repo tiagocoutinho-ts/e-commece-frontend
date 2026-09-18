@@ -1,9 +1,9 @@
 import { ShoppingCart, Search } from "lucide-react";
-import styles from "./styles.module.css";
+import styles from "@/styles.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useCard } from "../../contexts/CardContext";
-import { useProducts } from "../../contexts/ProductContext";
-import { useAuth } from "../../contexts/AuthContext";
+import { useCard } from "@/contexts/CardContext";
+import { useProducts } from "@/contexts/ProductContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function TopBar() {
   const { itemsCount, createOrder } = useCard();

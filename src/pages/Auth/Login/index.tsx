@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import styles from "./styles.module.css";
+import styles from "@/styles.module.css";
 import { useState } from "react";
-import { api } from "../../../service/api";
-import { useAuth } from "../../../contexts/AuthContext";
+import { api } from "@/service/api";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-toastify";
 
 export function Login() {

@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import styles from "./styles.module.css";
-import { useAuth } from "../../../contexts/AuthContext";
+import styles from "@/styles.module.css";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
-import { api } from "../../../service/api";
+import { api } from "@/service/api";
 import { toast } from "react-toastify";
 
 export function SignUp() {
