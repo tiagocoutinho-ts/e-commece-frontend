@@ -1,4 +1,4 @@
-import styles from "@/styles.module.css";
+import styles from "./styles.module.css";
 import { formatCurrency } from "@/utils/formatValues";
 import { Link } from "react-router-dom";
 import { formatSlug } from "@/utils/formatSlug";

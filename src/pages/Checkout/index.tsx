@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { api } from "@/service/api";
 import { formatCurrency } from "@/utils/formatValues";
 import { formatSlug } from "@/utils/formatSlug";
-import styles from "@/styles.module.css";
+import styles from "./styles.module.css";
 import { useCard } from "@/contexts/CardContext";
 import { toast } from "react-toastify";
 

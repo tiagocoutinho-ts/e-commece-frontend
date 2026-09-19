@@ -1,31 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-import { api } from "../../service/api";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { api } from "@/service/api";
+import type { Product, ProductContextData } from "./product.types";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  images: { url: string }[];
-}
-
-interface ProductContextData {
-  products: Product[];
-  searchInput: string;
-  setSearchInput: (value: string) => void;
-  handleSearch: (overrideSearch?: string) => void;
-  loading: boolean;
-}
-
-const ProductContext = createContext<ProductContextData>(
-  {} as ProductContextData
-);
+const ProductContext = createContext<ProductContextData>({} as ProductContextData);
 
 export function ProductProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -57,13 +34,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
 
   return (
     <ProductContext.Provider
-      value={{
-        products,
-        searchInput,
-        setSearchInput,
-        handleSearch,
-        loading,
-      }}
+      value={{ products, searchInput, setSearchInput, handleSearch, loading }}
     >
       {children}
     </ProductContext.Provider>

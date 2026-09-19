@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "@/service/api";
-import styles from "@/styles.module.css";
+import styles from "./styles.module.css";
 import { formatCurrency } from "@/utils/formatValues";
 import { toast } from "react-toastify";
 

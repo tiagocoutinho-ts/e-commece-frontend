@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/service/api";
-import styles from "@/styles.module.css";
+import styles from "./styles.module.css";
 import { ShoppingCart, Zap } from "lucide-react";
 import { useCard } from "@/contexts/CardContext";
 

@@ -1,44 +1,10 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
-import { api } from "../../service/api";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: User;
-  email: string;
-  id: string;
-  name: string;
-  role: string;
-}
-
-interface AuthContextData {
-  signed: boolean;
-  token: string | null;
-  loading: boolean;
-  signIn: (response: AuthResponse, callback?: () => void) => void;
-  signOut: () => void;
-  userName: User;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { api } from "@/service/api";
+import type { User, AuthResponse, AuthContextData } from "./auth.types";
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState<User | null>(null);
@@ -52,7 +18,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(false);
   }, []);
 
-  function signIn(response, callback?: () => void) {
+  function signIn(response: AuthResponse, callback?: () => void) {
     localStorage.setItem("@ecommerce:token", response.token);
     setToken(response.token);
     api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
@@ -65,6 +31,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   function signOut() {
     localStorage.removeItem("@ecommerce:token");
     setToken(null);
+    setUserName(null); 
   }
 
   return (

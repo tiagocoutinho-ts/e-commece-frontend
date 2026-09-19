@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "@/styles.module.css";
-import formStyles from "@/form.module.css";
+import styles from "./styles.module.css";
+import formStyles from "./form.module.css";
 import { CRUDTable } from "@/components/CRUDTable/CRUDTable";
 import { api } from "@/service/api";
 import { toast } from "react-toastify";
