@@ -3,16 +3,22 @@ import { api } from "@/service/api";
 import styles from "./styles.module.css";
 import { toast } from "react-toastify";
 import { ProductRow } from "./ProductRows";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function AdminProductTable() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const { token, loading: authLoading }: any = useAuth();
+
   useEffect(() => {
     const getProducts = async () => {
+      if (authLoading || !token) return;
+
       try {
         setLoading(true);
         const { data } = await api.get("/products/admin/all");
+        console.log(data)
         setProducts(data);
       } catch (error) {
         toast.error("Erro ao carregar produtos do painel.");
@@ -22,7 +28,7 @@ export function AdminProductTable() {
     };
 
     getProducts();
-  }, []);
+  }, [token, authLoading]);
 
   const handlerDeleteProduct = async (id: string) => {
     try {
