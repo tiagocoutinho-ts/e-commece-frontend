@@ -23,29 +23,17 @@ export function CardProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    api.get("/cart").then(({ data }) => {
-      if (data?.items) dispatch({ type: "SET_CART", payload: data });
-    }).catch(err => toast.error("Erro ao carregar carrinho:", err));
+    api.get("/cart")
+      .then(({ data }) => {
+        if (data?.items) dispatch({ type: "SET_CART", payload: data });
+      })
+      .catch(() => toast.error("Erro ao carregar carrinho."));
   }, [token]);
-
-  const addToCard = (product: any, quantity: number) => {
-    dispatch({ type: "ADD_TO_CARD", payload: { product, quantity } });
-  };
 
   const itemsCount = card?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
 
-  const createOrder = async (itemsToOrder?: any) => {
-    const list = itemsToOrder || card?.items || [];
-    const payload = list.map((item: any) => ({
-      productId: item.product.id,
-      quantity: item.quantity,
-    }));
-    const { data } = await api.post("/cart/items", { items: payload });
-    return data;
-  };
-
   return (
-    <CardContext.Provider value={{ addToCard, itemsCount, createOrder, card }}>
+    <CardContext.Provider value={{ card, dispatch, itemsCount }}>
       {children}
     </CardContext.Provider>
   );

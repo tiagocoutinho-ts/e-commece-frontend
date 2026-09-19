@@ -6,7 +6,7 @@ import { useProducts } from "@/contexts/ProductContext";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function TopBar() {
-  const { itemsCount, createOrder } = useCard();
+  const { itemsCount, } = useCard();
   const { searchInput, setSearchInput, handleSearch } = useProducts();
   const { userName } = useAuth();
 
@@ -52,7 +52,7 @@ export function TopBar() {
             <strong>Minha Conta</strong>
           </div>
 
-          <Link to={"/checkout"} onClick={createOrder}>
+          <Link to={"/checkout"}>
             <button
               className={styles.cartButton}
               aria-label="Carrinho de compras"

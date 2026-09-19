@@ -3,20 +3,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/service/api";
 import styles from "./styles.module.css";
 import { ShoppingCart, Zap } from "lucide-react";
-import { useCard } from "@/contexts/CardContext";
+import { useCard } from "@/contexts/CardContext"; 
+import { toast } from "react-toastify";
 
 export function ProductCard() {
-  const { addToCard, createOrder } = useCard();
-  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
+  const { dispatch } = useCard(); 
+
+  const [product, setProduct] = useState<any>(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const stockLimit = 5;
-  const { id } = useParams();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -40,22 +42,26 @@ export function ProductCard() {
     }
   }, [id]);
 
+  
   const handleBuyNow = async () => {
-    addToCard(product, quantity);
-    const currentItem = [{ product, quantity }];
+    if (!product) return;
+
+    dispatch({ type: "ADD_TO_CARD", payload: { product, quantity } });
 
     try {
-      await createOrder(currentItem);
+      const payload = [{ productId: product.id, quantity }];
+      await api.post("/cart/items", { items: payload });
       navigate("/checkout");
     } catch (err) {
-      alert("Não foi possível processar a compra. Tente novamente.");
+      toast.error("Não foi possível processar a compra. Tente novamente.");
     }
   };
 
-  const handleAddCard = (product, quantity) => {
-    const currentItem = [{ product, quantity }];
-    addToCard(product, quantity);
-    createOrder(currentItem);
+  const handleAddCard = (prod: any, qtd: number) => {
+    if (!prod) return;
+    
+    dispatch({ type: "ADD_TO_CARD", payload: { product: prod, quantity: qtd } });
+    toast.success("Produto adicionado ao carrinho!");
   };
 
   return (
@@ -69,7 +75,7 @@ export function ProductCard() {
           <div className={styles.productGrid}>
             <div className={styles.galleryContainer}>
               <div className={styles.thumbnailsList}>
-                {product.images?.map((img, index) => (
+                {product.images?.map((img: any, index: number) => (
                   <img
                     key={index}
                     src={img.url}

@@ -1,10 +1,3 @@
-export interface CardContextData {
-  card: Cart | null;
-  addToCard: (product: any, quantity: number) => void;
-  itemsCount: number;
-  createOrder: (itemsToOrder?: any) => Promise<any>;
-}
-
 export interface CartItem {
   id: string;
   quantity: number;
@@ -26,3 +19,9 @@ export type CartAction =
   | { type: "SET_CART"; payload: Cart }
   | { type: "ADD_TO_CARD"; payload: { product: any; quantity: number } }
   | { type: "CLEAR_CART" };
+
+export interface CardContextData {
+  card: Cart | null;
+  dispatch: React.Dispatch<CartAction>;
+  itemsCount: number;
+}

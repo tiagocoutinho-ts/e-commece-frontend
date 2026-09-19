@@ -3,33 +3,21 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
 import { api } from "@/service/api";
 import { formatCurrency } from "@/utils/formatValues";
-import { formatSlug } from "@/utils/formatSlug";
 import styles from "./styles.module.css";
 import { useCard } from "@/contexts/CardContext";
 import { toast } from "react-toastify";
-
-interface CartItem {
-  id: string;
-  quantity: number;
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    images: { url: string }[];
-  };
-}
+import { CheckoutItem } from "@/components/CheckoutItem";
 
 export function Checkout() {
-  const { token, loading, signOut }: any = useAuth();
+  const { token, loading: authLoading, signOut }: any = useAuth();
   const navigate = useNavigate();
-
-  const { card, setCard } = useCard();
+  const { card, dispatch } = useCard();
 
   useEffect(() => {
-    if (!loading && !token) {
+    if (!authLoading && !token) {
       navigate("/login");
     }
-  }, [token, loading, navigate]);
+  }, [token, authLoading, navigate]);
 
   useEffect(() => {
     if (!token) return;
@@ -37,12 +25,12 @@ export function Checkout() {
     const fetchCard = async () => {
       try {
         const { data } = await api.get("/cart");
-        setCard(data);
+        if (data) {
+          dispatch({ type: "SET_CART", payload: data });
+        }
       } catch (error: any) {
         if (error.response?.data?.error) {
-          toast.info(
-            "Para sua segurança, sua sessão expirou. Conecte-se novamente."
-          );
+          toast.info("Para sua segurança, sua sessão expirou. Conecte-se novamente.");
           signOut();
           navigate("/login");
         } else {
@@ -52,23 +40,17 @@ export function Checkout() {
     };
 
     fetchCard();
-  }, [token, setCard, signOut, navigate]);
+  }, [token, dispatch, signOut, navigate]);
 
   const totalCart =
-    (card?.items ?? []).reduce(
-      (acc: number, item: CartItem) => acc + item.product.price * item.quantity,
-      0
-    ) ?? 0;
+    card?.items?.reduce((acc, item) => acc + item.product.price * item.quantity, 0) ?? 0;
 
-  const handleUpdateQuantity = async (
-    productId: string,
-    newQuantity: number
-  ) => {
+  const handleUpdateQuantity = async (productId: string, newQuantity: number) => {
     try {
       const { data } = await api.put("/cart/items", {
         items: [{ productId, quantity: newQuantity }],
       });
-      setCard(data);
+      dispatch({ type: "SET_CART", payload: data });
     } catch (error) {
       toast.error("Erro ao atualizar a quantidade.");
     }
@@ -81,7 +63,8 @@ export function Checkout() {
       });
       if (status === 201) {
         toast.success("Compra realizada com sucesso!");
-        setCard(undefined);
+        dispatch({ type: "CLEAR_CART" });
+        navigate("/");
       }
     } catch (error) {
       toast.error("Falha ao concluir a compra.");
@@ -91,69 +74,24 @@ export function Checkout() {
   return (
     <main className={styles.containerMain}>
       <section className={styles.container}>
-        {loading || !card || !card.items ? (
+        {authLoading || !card || !card.items ? (
           <div className={styles.loading}>Carregando carrinho...</div>
         ) : (
           <>
             <header className={styles.header}>
               <h1>Seu Carrinho</h1>
-              <span className={styles.itemCount}>
-                {card.items.length} itens
-              </span>
+              <span className={styles.itemCount}>{card.items.length} itens</span>
             </header>
 
             {card.items.length > 0 ? (
               <>
                 <section className={styles.itemsList}>
-                  {card.items.map((item: CartItem) => (
-                    <article key={item.id} className={styles.itemCard}>
-                      <div className={styles.imageWrapper}>
-                        <img
-                          src={item.product.images[0]?.url}
-                          alt={formatSlug(item.product.name)}
-                        />
-                      </div>
-
-                      <div className={styles.itemInfo}>
-                        <div className={styles.mainDetails}>
-                          <h2>{item.product.name}</h2>
-                          <span className={styles.unitPrice}>
-                            {formatCurrency(item.product.price)} un.
-                          </span>
-                        </div>
-
-                        <div className={styles.subDetails}>
-                          <div className={styles.boxBotton}>
-                            <button
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  item.product.id,
-                                  item.quantity - 1
-                                )
-                              }
-                            >
-                              -
-                            </button>
-                            <span className={styles.quantity}>
-                              Qtd: {item.quantity}
-                            </span>
-                            <button
-                              onClick={() =>
-                                handleUpdateQuantity(
-                                  item.product.id,
-                                  item.quantity + 1
-                                )
-                              }
-                            >
-                              +
-                            </button>
-                          </div>
-                          <span className={styles.totalPrice}>
-                            {formatCurrency(item.product.price * item.quantity)}
-                          </span>
-                        </div>
-                      </div>
-                    </article>
+                  {card.items.map((item) => (
+                    <CheckoutItem
+                      key={item.id}
+                      item={item}
+                      onUpdateQuantity={handleUpdateQuantity}
+                    />
                   ))}
                 </section>
 
@@ -162,16 +100,13 @@ export function Checkout() {
                     <span>Total</span>
                     <strong>{formatCurrency(totalCart)}</strong>
                   </div>
-                  <button
-                    onClick={handlerOrderCheckout}
-                    className={styles.checkoutButton}
-                  >
+                  <button onClick={handlerOrderCheckout} className={styles.checkoutButton}>
                     Finalizar Compra
                   </button>
                 </footer>
               </>
             ) : (
-              ""
+              <p className={styles.emptyMessage}>Seu carrinho está vazio.</p>
             )}
           </>
         )}

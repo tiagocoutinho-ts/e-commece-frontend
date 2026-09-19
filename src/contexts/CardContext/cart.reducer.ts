@@ -1,6 +1,5 @@
 import type { Cart, CartAction } from "./cart.types";
 
-
 export function cartReducer(state: Cart | null, action: CartAction): Cart | null {
   switch (action.type) {
     case "SET_CART":

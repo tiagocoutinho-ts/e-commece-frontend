@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import { formatSlug } from "@/utils/formatSlug";
 import { useProducts } from "@/contexts/ProductContext";
 
-export function ProductGrid() {
+export function ProductCardGrid() {
   const { products } = useProducts();
 
   return (
     <section className={styles.productGrid}>
       {products &&
         products.map((product) => (
-          <Link to={`/${formatSlug(product.name)}/${product.id}`}>
+          <Link
+            key={product.id}
+            to={`/${formatSlug(product.name)}/${product.id}`}
+          >
             <article key={product.id} className={styles.productCard}>
-              <div className={styles.imageContainer}>
+              <div key={product.id} className={styles.imageContainer}>
                 {product.images?.length > 0 ? (
                   <img src={product.images[0].url} alt={product.name} />
                 ) : (
