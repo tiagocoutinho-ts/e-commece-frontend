@@ -1,6 +1,6 @@
 .topBar {
   margin-top: 0;
-  background-color: #121214;
+  background-color: #373737;
   color: #ffffff;
   padding: 12px 0 16px 0;
   border-bottom: 3px solid #8a7a7a;
@@ -49,10 +49,10 @@
   display: flex !important;
   flex-direction: row;
   align-items: stretch;
-  background-color: #1a1d20;
+  background-color: #373737;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid #27272a;
+  border: 1px solid #87878a;
   transition: border-color 0.2s, box-shadow 0.2s;
   margin: 0;
   padding: 0;

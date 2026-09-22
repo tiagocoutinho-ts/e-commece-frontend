@@ -7,7 +7,7 @@ export interface User {
 
 export interface AuthResponse {
   token: string;
-  user: User;
+  user: User | null;
   email: string;
   id: string;
   name: string;
@@ -16,9 +16,8 @@ export interface AuthResponse {
 
 export interface AuthContextData {
   signed: boolean;
-  token: string | null;
-  loading: boolean;
+  loading: boolean
   signIn: (response: AuthResponse, callback?: () => void) => void;
   signOut: () => void;
-  userName: User | null; 
+  user: User | null; 
 }

@@ -5,44 +5,49 @@ import type { User, AuthResponse, AuthContextData } from "./auth.types";
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState<User | null>(null);
 
   useEffect(() => {
-    const storagedToken = localStorage.getItem("@ecommerce:token");
-    if (storagedToken) {
-      setToken(storagedToken);
-      api.defaults.headers.common["Authorization"] = `Bearer ${storagedToken}`;
+    async function loadUser() {
+      try {
+        const response = await api.get("/auth/me");
+        setUser(response.data.user);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
-  }, []);
+
+    loadUser()
+  }, [])
 
   function signIn(response: AuthResponse, callback?: () => void) {
-    localStorage.setItem("@ecommerce:token", response.token);
-    setToken(response.token);
-    api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
-    setUserName(response.user);
+    setUser(response.user);
     if (callback) {
       callback();
     }
   }
 
-  function signOut() {
-    localStorage.removeItem("@ecommerce:token");
-    setToken(null);
-    setUserName(null); 
+  async function signOut() {
+    try {
+      await api.post("/logout");
+    } catch (error) {
+      console.error("Erro ao fazer logout", error);
+    } finally {
+      setUser(null);
+    }
   }
 
   return (
     <AuthContext.Provider
       value={{
-        signed: !!token,
-        token,
+        signed: !!user,
         loading,
         signIn,
         signOut,
-        userName,
+        user,
       }}
     >
       {children}

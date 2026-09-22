@@ -9,11 +9,11 @@ export function AdminProductTable() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { token, loading: authLoading }: any = useAuth();
+  const { signed, loading: authLoading } = useAuth();
 
   useEffect(() => {
     const getProducts = async () => {
-      if (authLoading || !token) return;
+      if (authLoading || !signed) return;
 
       try {
         setLoading(true);
@@ -28,7 +28,7 @@ export function AdminProductTable() {
     };
 
     getProducts();
-  }, [token, authLoading]);
+  }, [signed, authLoading]);
 
   const handlerDeleteProduct = async (id: string) => {
     try {

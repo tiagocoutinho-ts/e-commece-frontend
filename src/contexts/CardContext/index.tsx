@@ -15,10 +15,12 @@ const CardContext = createContext<CardContextData>({} as CardContextData);
 
 export function CardProvider({ children }: { children: ReactNode }) {
   const [card, dispatch] = useReducer(cartReducer, null);
-  const { token } = useAuth();
+  const { signed, loading } = useAuth(); 
 
   useEffect(() => {
-    if (!token) {
+    if (loading) return;
+
+    if (!signed) {
       dispatch({ type: "CLEAR_CART" });
       return;
     }
@@ -28,7 +30,7 @@ export function CardProvider({ children }: { children: ReactNode }) {
         if (data?.items) dispatch({ type: "SET_CART", payload: data });
       })
       .catch(() => toast.error("Erro ao carregar carrinho."));
-  }, [token]);
+  }, [signed, loading]); 
 
   const itemsCount = card?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
 

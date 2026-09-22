@@ -61,7 +61,6 @@ export function ProductCard() {
     if (!prod) return;
     
     dispatch({ type: "ADD_TO_CARD", payload: { product: prod, quantity: qtd } });
-    toast.success("Produto adicionado ao carrinho!");
   };
 
   return (
@@ -116,7 +115,7 @@ export function ProductCard() {
                     {Array.from({ length: stockLimit }, (_, index) => {
                       const value = index + 1;
                       return (
-                        <option key={value} value={value}>
+                        <option className={styles.quantityOption} key={value} value={value}>
                           {value} {value === 1 ? "unidade" : "unidades"}
                         </option>
                       );

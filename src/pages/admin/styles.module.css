@@ -28,7 +28,8 @@ header button {
   color: white;
   border: none;
   border-radius: 0.2rem;
-  font-weight: 500;
+  font-family: var(--font-main);
+  font-weight: 600;
 }
 
 header button:hover {

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
 import { api } from "@/service/api";
 import { formatCurrency } from "@/utils/formatValues";
 import styles from "./styles.module.css";
@@ -9,46 +8,30 @@ import { toast } from "react-toastify";
 import { CheckoutItem } from "@/components/CheckoutItem";
 
 export function Checkout() {
-  const { token, loading: authLoading, signOut }: any = useAuth();
+  const { signed, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { card, dispatch } = useCard();
 
-  useEffect(() => {
-    if (!authLoading && !token) {
-      navigate("/login");
-    }
-  }, [token, authLoading, navigate]);
+  if (!authLoading && !signed) {
+    navigate("/login");
+    return null;
+  }
 
-  useEffect(() => {
-    if (!token) return;
-
-    const fetchCard = async () => {
-      try {
-        const { data } = await api.get("/cart");
-        if (data) {
-          dispatch({ type: "SET_CART", payload: data });
-        }
-      } catch (error: any) {
-        if (error.response?.data?.error) {
-          toast.info("Para sua segurança, sua sessão expirou. Conecte-se novamente.");
-          signOut();
-          navigate("/login");
-        } else {
-          toast.error("Falha ao carregar carrinho.");
-        }
-      }
-    };
-
-    fetchCard();
-  }, [token, dispatch, signOut, navigate]);
+  if (authLoading) {
+    return <div>Carregando...</div>;
+  }
 
   const totalCart =
-    card?.items?.reduce((acc, item) => acc + item.product.price * item.quantity, 0) ?? 0;
+    card?.items?.reduce(
+      (acc, item) => acc + item.product.price * item.quantity,
+      0
+    ) ?? 0;
 
-  const handleUpdateQuantity = async (productId: string, newQuantity: number) => {
+  const handleUpdateQuantity = async (productId: string, quantity: number) => {
     try {
+      const payload = [{ productId, quantity }];
       const { data } = await api.put("/cart/items", {
-        items: [{ productId, quantity: newQuantity }],
+        items: payload,
       });
       dispatch({ type: "SET_CART", payload: data });
     } catch (error) {
@@ -70,7 +53,6 @@ export function Checkout() {
       toast.error("Falha ao concluir a compra.");
     }
   };
-
   return (
     <main className={styles.containerMain}>
       <section className={styles.container}>
@@ -80,7 +62,9 @@ export function Checkout() {
           <>
             <header className={styles.header}>
               <h1>Seu Carrinho</h1>
-              <span className={styles.itemCount}>{card.items.length} itens</span>
+              <span className={styles.itemCount}>
+                {card.items.length} itens
+              </span>
             </header>
 
             {card.items.length > 0 ? (
@@ -100,7 +84,10 @@ export function Checkout() {
                     <span>Total</span>
                     <strong>{formatCurrency(totalCart)}</strong>
                   </div>
-                  <button onClick={handlerOrderCheckout} className={styles.checkoutButton}>
+                  <button
+                    onClick={handlerOrderCheckout}
+                    className={styles.checkoutButton}
+                  >
                     Finalizar Compra
                   </button>
                 </footer>

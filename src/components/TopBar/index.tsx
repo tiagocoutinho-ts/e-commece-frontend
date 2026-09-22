@@ -8,11 +8,11 @@ import { useAuth } from "@/contexts/AuthContext";
 export function TopBar() {
   const { itemsCount, } = useCard();
   const { searchInput, setSearchInput, handleSearch } = useProducts();
-  const { userName } = useAuth();
+  const { user } = useAuth();
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleSearch();
     navigate("/");
@@ -48,7 +48,7 @@ export function TopBar() {
 
         <div className={styles.actions}>
           <div className={styles.account}>
-            <span>Olá, {userName ? userName.name : "Motorista"}</span>
+            <span>Olá, {user ? user.name : "Motorista"}</span>
             <strong>Minha Conta</strong>
           </div>
 
